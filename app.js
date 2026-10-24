@@ -49,7 +49,7 @@ checkButton.addEventListener('click', () => {
 });
 
 settingsButton.addEventListener('click', () => {
-  const message = 'Потужнометр — шуточный генератор случайных показаний от 0 до 100 ПТЖ. Не является настоящим измерительным прибором.';
+  const message = 'потужно мометр - новая разработка украини';
   if (tg?.showAlert) tg.showAlert(message);
   else window.alert(message);
 });
