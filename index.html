@@ -25,6 +25,26 @@
       <div class="range"><span>MIN</span><span>MAX</span></div>
     </section>
 
+    <section class="camera-panel" id="camera-panel" aria-label="Проверка цветов камерой" hidden>
+      <video id="camera-preview" autoplay muted playsinline aria-label="Изображение с камеры"></video>
+      <div class="camera-topbar"><span>АНАЛИЗ ПО ВИДЕО</span><button class="close-camera" id="close-camera" type="button" aria-label="Закрыть камеру">×</button></div>
+      <div class="camera-hud">
+        <div class="camera-hud-head">
+          <p class="camera-status" id="camera-status" aria-live="polite">Камера выключена</p>
+          <div class="color-stats" aria-live="polite">
+            <span class="color-stat"><i class="blue-dot"></i>СИНИЙ <b id="blue-percent">0%</b></span>
+            <span class="color-stat"><i class="yellow-dot"></i>ЖЁЛТЫЙ <b id="yellow-percent">0%</b></span>
+            <span class="color-stat">ВСЕГО <b id="total-percent">0%</b></span>
+          </div>
+        </div>
+        <div class="camera-result">
+          <div class="meter-frame camera-meter-frame" role="img" aria-label="Потужность по цветам в кадре"><div class="meter" id="video-meter"></div></div>
+          <div class="camera-value"><output id="video-value">0</output><span>ПТЖ</span></div>
+        </div>
+        <p class="camera-note">Кадр анализируется на устройстве</p>
+      </div>
+    </section>
+
     <section class="lower">
       <div class="card readout">
         <div class="readout-head"><h2>ПОКАЗНИК<br>ПОТУЖНОСТІ</h2><span class="live"><i></i><i></i></span></div>
@@ -34,11 +54,13 @@
       </div>
       <div class="controls">
         <span class="mode-label">РЕЖИМ</span>
-        <button class="check-button" id="check" type="button">ПРОВЕРИТЬ</button>
+        <button class="check-button" id="check" type="button">СЛУЧАЙНАЯ ПРОВЕРКА</button>
+        <button class="camera-button" id="camera-toggle" type="button" aria-controls="camera-panel" aria-pressed="false">ВКЛЮЧИТЬ КАМЕРУ</button>
         <button class="settings-button" id="settings" type="button" aria-label="Настройки" title="О приложении">⚙</button>
       </div>
     </section>
-    <p class="disclaimer">Шуточный генератор показаний. Не является измерительным прибором.</p>
+    <p class="disclaimer">потужнометр</p>
   </main>
+  <audio id="threshold-sound" src="potuzhnolit.mp3" preload="auto"></audio>
 </body>
 </html>

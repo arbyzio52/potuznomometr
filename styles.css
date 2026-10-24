@@ -1,4 +1,5 @@
-* { box-sizing: border-box; }+:root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background:#08090a; color:#f1f1f1; }
+* { box-sizing: border-box; }
+:root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background:#08090a; color:#f1f1f1; }
 body { margin:0; min-height:100vh; display:grid; place-items:center; padding:18px 14px; background:radial-gradient(ellipse at 50% 0%, #1a1b1d 0, #0a0b0c 48%, #070809 100%); }
 .device { width:min(100%, 470px); position:relative; }
 .brand { min-height:78px; border:1px solid #292a2c; border-radius:28px 28px 6px 6px; background:linear-gradient(180deg,#202123,#111213); box-shadow:0 5px 18px #0009,inset 0 1px #ffffff0c; display:flex; align-items:center; justify-content:center; gap:13px; font-size:clamp(22px,6vw,37px); font-weight:900; letter-spacing:.035em; white-space:nowrap; }
@@ -12,5 +13,38 @@ h1,h2,p { margin:0; }.section-head h1 { color:#c4c5c6; font-size:16px; font-weig
 .range { display:flex; justify-content:space-between; color:#8c8d8f; font-size:14px; margin:13px 9px 0; }
 .lower { display:grid; grid-template-columns:1.08fr .72fr; gap:16px; align-items:center; margin-top:34px; }.readout { border-radius:24px; padding:13px 12px 11px; }.readout-head { display:flex; align-items:center; justify-content:space-between; }.readout h2 { color:#c3c4c5; font-size:15px; line-height:1.13; font-weight:850; }.live { display:flex; gap:8px; align-items:center; }.live i { width:10px; height:10px; border-radius:50%; background:#ee3519; box-shadow:0 0 7px #f43b1e55; }.live i+i { width:9px; height:9px; background:#454648; }.units { color:#8a8b8d; font-size:12px; margin:4px 0 3px; }.number-frame { min-height:104px; border:2px solid #3a3b3d; border-radius:9px; box-shadow:inset 0 0 0 3px #131415; display:grid; place-items:center; background:#050606; }.number-frame output { font-size:clamp(57px,15vw,76px); font-weight:850; line-height:1; letter-spacing:-.06em; font-variant-numeric:tabular-nums; }.readout-foot { display:flex; justify-content:space-between; align-items:center; color:#77797b; font-size:10px; margin-top:7px; }.mini-flag { color:#a5a6a7; font-size:9px; }
 .controls { display:flex; align-items:center; flex-direction:column; gap:13px; }.mode-label { color:#858689; font-size:14px; letter-spacing:.06em; }.check-button,.settings-button { color:#eee; border:1px solid #333537; background:linear-gradient(150deg,#27282a,#161718); box-shadow:0 5px 12px #0007,inset 0 1px #ffffff10; cursor:pointer; }.check-button { width:100%; min-height:62px; border-radius:40px; font-size:clamp(14px,4vw,20px); font-weight:850; }.check-button:active,.settings-button:active { transform:translateY(1px); }.check-button:disabled { color:#8f9092; cursor:wait; }.settings-button { width:62px; height:62px; border-radius:50%; font-size:30px; color:#c5c6c7; align-self:flex-end; }.disclaimer { margin:17px 4px 0; color:#686a6c; text-align:center; font-size:11px; }
-@media (max-width:370px) { .lower { gap:10px; grid-template-columns:1.05fr .78fr; }.scale-card { padding:17px 15px 20px; }.meter { gap:3px; }.readout { padding:11px 9px; }.readout h2 { font-size:13px; }.check-button { min-height:56px; } }
+.camera-panel { margin-top:16px; padding:15px; border-radius:22px; }.camera-panel-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }.camera-panel h2 { margin:0; color:#c3c4c5; font-size:14px; }.camera-status { margin:5px 0 0; color:#939597; font-size:12px; }.camera-mark { color:#e84936; font-size:16px; text-shadow:0 0 10px #e8493680; }.camera-view { overflow:hidden; border:2px solid #363739; border-radius:12px; background:#050606; aspect-ratio:4/3; }.camera-view video { display:block; width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }.color-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:12px; }.color-stat { display:flex; align-items:center; gap:5px; white-space:nowrap; color:#9a9b9d; font-size:10px; }.color-stat b { margin-left:auto; color:#f2f2f2; font-size:12px; font-variant-numeric:tabular-nums; }.color-stat i { display:inline-block; width:8px; height:8px; flex:none; border-radius:50%; }.blue-dot { background:#2279ed; }.yellow-dot { background:#ffd52a; }.total-stat { justify-content:flex-end; }.camera-note { margin:10px 0 0; color:#737577; font-size:10px; line-height:1.4; }.camera-button { width:100%; min-height:54px; padding:0 12px; border:1px solid #344239; border-radius:30px; color:#bce9c7; background:linear-gradient(150deg,#1d2921,#111714); box-shadow:0 5px 12px #0007,inset 0 1px #ffffff10; cursor:pointer; font-size:clamp(11px,3.2vw,14px); font-weight:800; }.camera-button[aria-pressed="true"] { border-color:#526b59; color:#fff; background:linear-gradient(150deg,#314d39,#1c2b21); }.camera-button:disabled { opacity:.65; cursor:wait; }.camera-panel[hidden] { display:none; }
+@media (max-width:370px) { .lower { gap:10px; grid-template-columns:1.05fr .78fr; }.scale-card { padding:17px 15px 20px; }.meter { gap:3px; }.readout { padding:11px 9px; }.readout h2 { font-size:13px; }.check-button { min-height:56px; }.color-stats { gap:4px; }.color-stat { gap:3px; font-size:9px; }.color-stat b { font-size:11px; } }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none!important; scroll-behavior:auto!important; } }
+
+/* Segmented scale: green at minimum, red at maximum. */
+.meter { height:88px; min-height:0; }
+.bar { height:40px; min-height:18px; max-height:42px; background:hsl(calc(120 - var(--n)*120) 88% 48%); }
+.bar:nth-child(3n) { height:34px; }
+.bar:nth-child(3n + 1) { height:42px; }
+
+/* Immersive camera view with a compact reading strip above the safe area. */
+body.camera-open { overflow:hidden; }
+.camera-panel { position:fixed; inset:0; z-index:1000; display:block; width:100%; height:100vh; height:100dvh; margin:0; padding:0; overflow:hidden; border:0; border-radius:0; background:#050606; box-shadow:none; color:#fff; }
+.camera-panel[hidden] { display:none; }
+.camera-panel > video { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; background:#050606; }
+.camera-topbar { position:absolute; z-index:1; top:calc(env(safe-area-inset-top, 0px) + 12px); left:15px; right:15px; display:flex; justify-content:space-between; align-items:center; }
+.camera-topbar > span { padding:10px 14px; border:1px solid #ffffff20; border-radius:24px; background:#08090bb8; color:#f5f5f5; font-size:12px; font-weight:800; letter-spacing:.08em; backdrop-filter:blur(12px); }
+.close-camera { display:grid; place-items:center; width:44px; height:44px; border:1px solid #ffffff28; border-radius:50%; background:#08090bc9; color:#fff; cursor:pointer; font-size:30px; line-height:1; backdrop-filter:blur(12px); }
+.camera-hud { position:absolute; z-index:1; left:12px; right:12px; bottom:calc(env(safe-area-inset-bottom, 0px) + 12px); padding:14px; border:1px solid #ffffff24; border-radius:20px; background:linear-gradient(145deg,#101216ed,#070809e8); box-shadow:0 10px 36px #0008; backdrop-filter:blur(16px); }
+.camera-hud-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:11px; }
+.camera-status { margin:0; color:#d5d7d9; font-size:12px; }
+.color-stats { display:flex; align-items:center; justify-content:flex-end; gap:12px; margin:0; }
+.color-stat { gap:5px; color:#c2c4c6; font-size:9px; }
+.color-stat b { margin-left:2px; font-size:11px; }
+.camera-result { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:12px; }
+.camera-meter-frame { min-width:0; padding:5px 9px; border-color:#44474a; background:#030405; }
+.camera-meter-frame .meter { height:42px; gap:4px; padding:2px 0; }
+.camera-meter-frame .bar { height:23px; min-height:12px; max-height:23px; }
+.camera-meter-frame .bar:nth-child(3n) { height:19px; }
+.camera-meter-frame .bar:nth-child(3n + 1) { height:23px; }
+.camera-value { display:flex; align-items:baseline; gap:5px; min-width:88px; }
+.camera-value output { color:#fff; font-size:clamp(40px,10vw,58px); font-weight:850; line-height:.95; letter-spacing:-.06em; font-variant-numeric:tabular-nums; }
+.camera-value span { color:#aeb1b4; font-size:11px; }
+.camera-note { margin:10px 2px 0; color:#a2a5a8; font-size:10px; line-height:1.4; }
+@media (max-width:380px) { .camera-hud { left:8px; right:8px; padding:11px 9px; }.camera-hud-head { gap:6px; }.color-stats { gap:7px; }.color-stat { font-size:8px; }.camera-value { min-width:76px; gap:3px; }.camera-value output { font-size:42px; }.camera-meter-frame .meter { gap:3px; } }
