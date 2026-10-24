@@ -1,0 +1,2 @@
+# potuznomometr
+for my bot
