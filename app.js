@@ -11,6 +11,8 @@ const mood = document.querySelector('#mood');
 const checkButton = document.querySelector('#check');
 const settingsButton = document.querySelector('#settings');
 const cameraButton = document.querySelector('#camera-toggle');
+const cameraMode = document.querySelector('#camera-mode');
+const colorStats = document.querySelector('#color-stats');
 const cameraPanel = document.querySelector('#camera-panel');
 const cameraPreview = document.querySelector('#camera-preview');
 const cameraStatus = document.querySelector('#camera-status');
@@ -28,6 +30,7 @@ analysisCanvas.height = 120;
 const barCount = 20;
 let cameraStream = null;
 let cameraTimer = null;
+let cameraSession = 0;
 let soundContext = null;
 let soundBufferPromise = null;
 let wasAboveSoundThreshold = false;
@@ -106,6 +109,7 @@ checkButton.addEventListener('click', () => {
   if (checkButton.disabled) return;
   stopCamera({ hidePanel: true });
   checkButton.disabled = true;
+  cameraButton.disabled = true;
   checkButton.textContent = 'ПРОВЕРЯЕМ…';
   statusText.textContent = 'ИДЁТ ПРОВЕРКА';
   bars.forEach(bar => bar.classList.add('active'));
@@ -119,14 +123,16 @@ checkButton.addEventListener('click', () => {
       paint(result);
       statusText.textContent = result < 35 ? 'ПОТУЖНОСТЬ УМЕРЕННАЯ' : result < 70 ? 'ПОТУЖНОСТЬ ВЫСОКАЯ' : 'ПОТУЖНОСТЬ МАКСИМАЛЬНАЯ';
       checkButton.disabled = false;
+      cameraButton.disabled = false;
       checkButton.textContent = 'СЛУЧАЙНАЯ ПРОВЕРКА';
     }
   }, 110);
 });
 
 function stopCamera({ hidePanel = false } = {}) {
+  cameraSession += 1;
   if (cameraTimer !== null) {
-    window.clearInterval(cameraTimer);
+    window.clearTimeout(cameraTimer);
     cameraTimer = null;
   }
   if (cameraStream) {
@@ -163,7 +169,10 @@ function explainCameraError(error) {
 }
 
 async function startCamera() {
+  const session = ++cameraSession;
+  const byFace = cameraMode.value === 'face';
   cameraPanel.hidden = false;
+  colorStats.hidden = byFace;
   document.body.classList.add('camera-open');
   cameraStatus.textContent = 'Запрашиваем доступ к камере…';
   bluePercent.textContent = '0%';
@@ -182,26 +191,76 @@ async function startCamera() {
   cameraButton.disabled = true;
   checkButton.disabled = true;
   try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
+    const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
-        facingMode: { ideal: 'environment' },
+        facingMode: { ideal: byFace ? 'user' : 'environment' },
         width: { ideal: 640 },
         height: { ideal: 480 },
       },
     });
-    cameraPreview.srcObject = cameraStream;
+    if (session !== cameraSession) {
+      stream.getTracks().forEach(track => track.stop());
+      return;
+    }
+    cameraStream = stream;
+    cameraPreview.srcObject = stream;
     await cameraPreview.play();
+    if (session !== cameraSession) return;
     cameraButton.disabled = false;
     cameraButton.textContent = 'ВЫКЛЮЧИТЬ КАМЕРУ';
     cameraButton.setAttribute('aria-pressed', 'true');
-    cameraStatus.textContent = 'Ищем синие и жёлтые оттенки…';
-    analyzeCameraFrame();
-    cameraTimer = window.setInterval(analyzeCameraFrame, 250);
   } catch (error) {
+    if (session !== cameraSession) return;
     stopCamera();
     cameraStatus.textContent = explainCameraError(error);
     cameraButton.textContent = 'ПОПРОБОВАТЬ ЕЩЁ';
+    return;
+  }
+
+  if (byFace) {
+    startFaceAnalysis(session);
+  } else {
+    cameraStatus.textContent = 'Ищем синие и жёлтые оттенки…';
+    runCameraAnalysis(session, analyzeCameraFrame, 250);
+  }
+}
+
+async function runCameraAnalysis(session, analyze, delay) {
+  if (session !== cameraSession) return;
+  await analyze();
+  if (session === cameraSession) {
+    cameraTimer = window.setTimeout(() => runCameraAnalysis(session, analyze, delay), delay);
+  }
+}
+
+async function startFaceAnalysis(session) {
+  cameraStatus.textContent = 'Загружаем модель и фото…';
+  try {
+    const { getFaceComparator } = await import('./face-model/compare.mjs');
+    if (session !== cameraSession) return;
+    const compare = await getFaceComparator();
+    if (session !== cameraSession) return;
+    cameraStatus.textContent = 'Смотрим на кадр…';
+    runCameraAnalysis(session, async () => {
+      if (cameraPreview.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return;
+      try {
+        const score = await compare(cameraPreview);
+        if (session !== cameraSession) return;
+        cameraStatus.textContent = score === null ? 'Лицо не найдено. Посмотри в камеру.' : 'Сходство с фото · шкала ПТЖ';
+        paintCameraValue(score ?? 0);
+      } catch (error) {
+        if (session !== cameraSession) return;
+        stopCamera();
+        cameraStatus.textContent = 'Не удалось сравнить кадр. Закрой окно и попробуй снова.';
+        console.error(error);
+      }
+    }, 500);
+  } catch (error) {
+    if (session !== cameraSession) return;
+    stopCamera();
+    cameraStatus.textContent = 'Не удалось загрузить модель или обработать фото. Закрой окно и попробуй снова.';
+    console.error(error);
   }
 }
 
@@ -257,7 +316,7 @@ closeCameraButton.addEventListener('click', () => stopCamera({ hidePanel: true }
 window.addEventListener('pagehide', () => stopCamera({ hidePanel: true }));
 
 settingsButton.addEventListener('click', () => {
-  const message = 'Камера анализирует долю синих и жёлтых оттенков в кадре. Видео не записывается и не отправляется. Показания шуточные.';
+  const message = 'Камера измеряет долю синих и жёлтых оттенков или сходство лица с двумя фото. Кадры обрабатываются на устройстве. Показания шуточные.';
   if (tg?.showAlert) tg.showAlert(message);
   else window.alert(message);
 });

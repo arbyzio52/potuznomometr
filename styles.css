@@ -48,3 +48,21 @@ body.camera-open { overflow:hidden; }
 .camera-value span { color:#aeb1b4; font-size:11px; }
 .camera-note { margin:10px 2px 0; color:#a2a5a8; font-size:10px; line-height:1.4; }
 @media (max-width:380px) { .camera-hud { left:8px; right:8px; padding:11px 9px; }.camera-hud-head { gap:6px; }.color-stats { gap:7px; }.color-stat { font-size:8px; }.camera-value { min-width:76px; gap:3px; }.camera-value output { font-size:42px; }.camera-meter-frame .meter { gap:3px; } }
+.camera-mode {
+  width: 100%;
+  display: grid;
+  gap: 5px;
+  color: #c2c4c6;
+  font-size: 12px;
+}
+.camera-mode select {
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: 1px solid #44474a;
+  border-radius: 10px;
+  background: #17191b;
+  color: #fff;
+  font: inherit;
+}
+.color-stats[hidden] { display: none; }
